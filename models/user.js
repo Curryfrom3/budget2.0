@@ -1,19 +1,5 @@
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
-
-const User = mongoose.model('User', userSchema);
-// models/user.js
-
 const transactionSchema = new mongoose.Schema({
   catagory: {
     type: String,
@@ -26,10 +12,28 @@ const transactionSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  Date: {
+  date: {
     type: Date,
   },
   
 });
+
+const userSchema = mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  transactions: [transactionSchema],
+
+});
+
+const User = mongoose.model('User', userSchema);
+// models/user.js
+
+
 
 module.exports = User;
