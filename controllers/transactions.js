@@ -10,9 +10,13 @@ const User = require('../models/user.js');
 
 router.get('/', (req, res) => {
 
+router.get('/new', async (req, res) => {
+  res.render('applications/new.ejs');
+});
+
 router.get('/', async (req, res) => {
   try {
-    res.render('applications/index.ejs');
+    res.render('transactions/index.ejs');
   } catch (error) {
     console.log(error);
     res.redirect('/');

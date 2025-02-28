@@ -7,10 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Budget</title>
   </head>
-  <body>
-    <h1>Budget</h1>
-    <p>Budget tracker.</p>
-    <a href="/auth/sign-up">Sign up</a>
-    <a href="/auth/sign-in">Sign in</a>
-  </body>
+
+<body>
+  <%- include('./partials/_navbar.ejs') %>
+  <h1>Budget</h1>
+  <p>A Budget tracker.</p>
+  <a href="/users/<%=user._id%>/applications/new">budget</a>
+  <a href="/auth/sign-up">Sign up</a>
+  <a href="/auth/sign-in">Sign in</a>
+</body>
+
 </html>
