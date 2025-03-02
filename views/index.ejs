@@ -1,4 +1,4 @@
-<!-- views/index.ejs -->
+<!-- applications/index.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,14 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Budget</title>
   </head>
+  <body>
+    <%- include('partials/_navbar') %>
+    <h1>Budget</h1>
 
-<body>
-  <%- include('./partials/_navbar.ejs') %>
-  <h1>Budget</h1>
-  <p>A Budget tracker.</p>
-  <a href="/users/<%=user._id%>/applications/new">budget</a>
-  <a href="/auth/sign-up">Sign up</a>
-  <a href="/auth/sign-in">Sign in</a>
-</body>
+    <% if (user) { %>
+      <a href="/users/<%= user._id %>/transactions/new">Add a Transaction</a>
+    <% } else { %>
+      <p>Please <a href="/auth/sign-in">sign in</a> to add a transaction.</p>
+    <% } %>
 
+    <p>Add the following:</p>
+    <ul> 
+      <% if (transactions.length > 0) { %>
+        <% transactions.forEach((transaction) => { %>
+          <li><%= transaction.name %> - $<%= transaction.amount %> on <%= transaction.date.toDateString() %></li>
+        <% }) %>
+      <% } else { %>
+        <p>No transactions found.</p>
+      <% } %>
+    </ul>
+  </body>
 </html>

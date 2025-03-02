@@ -1,0 +1,28 @@
+<!-- views/applications/show.ejs -->
+
+<!-- views/transactions/show.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= transaction.name %></title>
+  </head>
+  <body>
+    <%- include('partials/_navbar.ejs') %>
+    <h1><%= transaction.name %> - $<%= transaction.amount %></h1>
+    
+    <p>Category: <%= transaction.category %></p>
+    <p>Type: <%= transaction.type %></p>
+    <p>Date: <%= transaction.date.toDateString() %></p>
+
+    <% if (transaction.notes) { %>
+      <p>Notes: <%= transaction.notes %></p>
+    <% } %>
+    
+    <% if (transaction.receiptLink) { %>
+      <a href="<%= transaction.receiptLink %>">View receipt</a>
+    <% } %>
+  </body>
+</html>
