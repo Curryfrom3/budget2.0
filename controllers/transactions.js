@@ -3,7 +3,23 @@ const router = express.Router();
 
 const { User, Transaction } = require('../models/user.js'); // Correct import
 
-// Show Route
+// Show Route: Display a specific user's transactions
+router.get('/', async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.session.user._id).populate('transactions'); // Populate the transactions array
+    if (!currentUser) {
+      return res.redirect('/auth/sign-in'); // Redirect if user not found
+    }
+
+    // Pass the transactions to the view
+    res.render('index', { transactions: currentUser.transactions });
+  } catch (error) {
+    console.error(error);
+    res.redirect('/');
+  }
+});
+
+// Show Transaction Details Route: Display a specific transaction
 router.get('/:transactionId', async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id);
@@ -26,7 +42,7 @@ router.get('/:transactionId', async (req, res) => {
   }
 });
 
-// Create Transaction
+// Create Transaction Route: Add a new transaction
 router.post('/', async (req, res) => {
   try {
     // Look up the user from req.session
@@ -42,8 +58,11 @@ router.post('/', async (req, res) => {
 
     // Create a new transaction instance
     const newTransaction = new Transaction(req.body);
+    
+    // Save the transaction first
+    await newTransaction.save();
 
-    // Push the new transaction to the user's transactions array
+    // Add the new transaction to the user's transactions array
     currentUser.transactions.push(newTransaction);
     
     // Save changes to the user
