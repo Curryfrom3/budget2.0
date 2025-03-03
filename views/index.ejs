@@ -1,4 +1,4 @@
-applications/index.ejs
+<!-- applications/index.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,10 +16,9 @@ applications/index.ejs
     <% } else { %>
       <p>Please <a href="/auth/sign-in">sign in</a> to add a transaction.</p>
     <% } %>
-
     <p>Add the following:</p>
     <ul> 
-      <% if (transactions.length > 0) { %>
+      <% if (transactions && transactions.length > 0) { %> 
         <% transactions.forEach((transaction) => { %>
           <li><%= transaction.name %> - $<%= transaction.amount %> on <%= transaction.date.toDateString() %></li>
         <% }) %>

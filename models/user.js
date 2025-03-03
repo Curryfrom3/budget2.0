@@ -2,8 +2,13 @@ const mongoose = require('mongoose');
 
 // Define transaction schema
 const transactionSchema = new mongoose.Schema({
-  name: { type: String, required: true }, // Name of transaction
-  amount: { type: Number, required: true }, // Dollar amount
+
+  name: { type: String,
+  required: true }, // Name of transaction
+
+  amount: { type: Number, 
+    required: true }, // Dollar amount
+    
   category: { 
     type: String,
     enum: ['income', 'food', 'transportation', 'entertainment', 'bills', 'savings', 'other'], 

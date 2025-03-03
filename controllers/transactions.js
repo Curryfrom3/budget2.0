@@ -11,8 +11,8 @@ router.get('/', async (req, res) => {
       return res.redirect('/auth/sign-in'); // Redirect if user not found
     }
 
-    // Pass the transactions to the view
-    res.render('index', { transactions: currentUser.transactions });
+    // Pass the user AND transactions to the view
+    res.render('index', { transactions: currentUser.transactions, user: currentUser });
   } catch (error) {
     console.error(error);
     res.redirect('/');
