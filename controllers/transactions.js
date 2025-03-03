@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
-
-const { User, Transaction } = require('../models/user.js'); // Correct import
+const Transaction = require('../models/transactions.js'); 
+const User = require('../models/user.js'); 
 
 // Show Route: Display a specific user's transactions
 router.get('/', async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id).populate('transactions'); // Populate the transactions array
+    console.log(currentUser);
     if (!currentUser) {
       return res.redirect('/auth/sign-in'); // Redirect if user not found
     }
 
     // Pass the user AND transactions to the view
-    res.render('index', { transactions: currentUser.transactions, user: currentUser });
+    res.render('transactions/index.ejs', { transactions: currentUser.transactions, user: currentUser });
   } catch (error) {
     console.error(error);
     res.redirect('/');
@@ -42,6 +43,22 @@ router.get('/:transactionId', async (req, res) => {
   }
 });
 
+// Create New Transaction Route: Display the form to create a new transaction
+router.get('/new', async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.session.user._id);
+    if (!currentUser) {
+      return res.redirect('/auth/sign-in'); // Redirect if user not found
+    }
+
+    // Render the form to create a new transaction
+    res.render('transactions/new.ejs', { user: currentUser });
+  } catch (error) {
+    console.error(error);
+    res.redirect('/');
+  }
+});
+
 // Create Transaction Route: Add a new transaction
 router.post('/', async (req, res) => {
   try {
@@ -58,13 +75,13 @@ router.post('/', async (req, res) => {
 
     // Create a new transaction instance
     const newTransaction = new Transaction(req.body);
-    
+
     // Save the transaction first
     await newTransaction.save();
 
     // Add the new transaction to the user's transactions array
     currentUser.transactions.push(newTransaction);
-    
+
     // Save changes to the user
     await currentUser.save();
 
@@ -72,6 +89,61 @@ router.post('/', async (req, res) => {
     res.redirect(`/users/${currentUser._id}/transactions`);
   } catch (error) {
     // If any errors, log them and redirect back home
+    console.log(error);
+    res.redirect('/');
+  }
+});
+
+// Delete Transaction Route: Delete a specific transaction
+router.delete('/:transactionId', async (req, res) => {
+  try {
+    // Look up the user from req.session
+    const currentUser = await User.findById(req.session.user._id);
+    // Use the Mongoose .deleteOne() method to delete
+    // a transaction using the id supplied from req.params
+    currentUser.transactions.id(req.params.transactionId).deleteOne();
+    // Save changes to the user
+    await currentUser.save();
+    // Redirect back to the transactions index view
+    res.redirect(`/users/${currentUser._id}/transactions`);
+  } catch (error) {
+    // If any errors, log them and redirect back home
+    console.log(error);
+    res.redirect('/');
+  }
+});
+
+// Edit Transaction Route: Display the form to edit a transaction
+router.get('/:transactionId/edit', async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.session.user._id);
+    const transaction = currentUser.transactions.id(req.params.transactionId);
+    res.render('transactions/edit.ejs', {
+      transaction: transaction,
+    });
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');
+  }
+});
+
+// Update Transaction Route: Update a specific transaction
+router.put('/:transactionId', async (req, res) => {
+  try {
+    // Find the user from req.session
+    const currentUser = await User.findById(req.session.user._id);
+    // Find the current transaction from the id supplied by req.params
+    const transaction = currentUser.transactions.id(req.params.transactionId);
+    // Use the Mongoose .set() method
+    // this method updates the current transaction to reflect the new form data on `req.body`
+    transaction.set(req.body);
+    // Save the current user
+    await currentUser.save();
+    // Redirect back to the show view of the current transaction
+    res.redirect(
+      `/users/${currentUser._id}/transactions/${req.params.transactionId}`
+    );
+  } catch (error) {
     console.log(error);
     res.redirect('/');
   }

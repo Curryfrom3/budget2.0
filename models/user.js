@@ -8,7 +8,7 @@ const transactionSchema = new mongoose.Schema({
 
   amount: { type: Number, 
     required: true }, // Dollar amount
-    
+
   category: { 
     type: String,
     enum: ['income', 'food', 'transportation', 'entertainment', 'bills', 'savings', 'other'], 
@@ -34,4 +34,4 @@ const User = mongoose.model('User', userSchema);
 const Transaction = mongoose.model('Transaction', transactionSchema);
 
 // Export both models
-module.exports = { User, Transaction };
+module.exports = User;

@@ -1,16 +1,16 @@
-<!-- views/applications/new.ejs -->
+<!-- views/transactions/new.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Add a New App</title>
   </head>
   <body>
-    <%- include('partials/_navbar.ejs') %>
+    <%- include('../partials/_navbar.ejs') %>
     <h1>Add a New App</h1>
-    <!-- views/transactions/new.ejs -->
 
     <form action="/transactions" method="POST">
       <label for="name">Transaction Name:</label>
@@ -41,5 +41,5 @@
     
       <button type="submit">Add Transaction</button>
     </form>
-    >
+  </body>
 </html>

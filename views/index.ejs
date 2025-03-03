@@ -5,26 +5,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Budget</title>
   </head>
   <body>
     <%- include('partials/_navbar') %>
-    <h1>Budget</h1>
-
-    <% if (user) { %>
-      <a href="/users/<%= user._id %>/transactions/new">Add a Transaction</a>
-    <% } else { %>
-      <p>Please <a href="/auth/sign-in">sign in</a> to add a transaction.</p>
-    <% } %>
-    <p>Add the following:</p>
-    <ul> 
-      <% if (transactions && transactions.length > 0) { %> 
-        <% transactions.forEach((transaction) => { %>
-          <li><%= transaction.name %> - $<%= transaction.amount %> on <%= transaction.date.toDateString() %></li>
-        <% }) %>
-      <% } else { %>
-        <p>No transactions found.</p>
-      <% } %>
-    </ul>
+    <h1>Budget Tracker</h1>
   </body>
 </html>
