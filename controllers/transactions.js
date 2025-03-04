@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const Transaction = require('../models/transactions.js'); 
 const User = require('../models/user.js'); 
 
 // Show Route: Display a specific user's transactions
@@ -19,7 +18,7 @@ router.get('/', async (req, res) => {
     res.redirect('/');
   }
 });
-
+// /users/:userId/transactions
 // Create New Transaction Route: Display the form to create a new transaction
 router.get('/new', async (req, res) => {
   try {
@@ -34,6 +33,11 @@ router.get('/new', async (req, res) => {
     console.error(error);
     res.redirect('/');
   }
+});
+// controllers/applications.js
+
+router.get('/:transactionId', (req, res) => {
+  res.send(`here is your request param: ${req.params.transactionId}`);
 });
 
 // Show Transaction Details Route: Display a specific transaction
@@ -63,14 +67,33 @@ router.get('/:transactionId', async (req, res) => {
     res.redirect('/');
   }
 });
+// controllers/applications.js`
 
+router.post('/', async (req, res) => {
+  try {
+    // Look up the user from req.session
+    const currentUser = await User.findById(req.session.user._id);
+    // Push req.body (the new form data object) to the
+    // applications array of the current user
+    currentUser.transactions.push(req.body);
+    // Save changes to the user
+    await currentUser.save();
+    // Redirect back to the applications index view
+    res.redirect(`/users/${currentUser._id}/transactions`);
+  } catch (error) {
+    // If any errors, log them and redirect back home
+    console.log(error);
+    res.redirect('/');
+  }
+});
 
+//users/:userId/transactions
 // Create Transaction Route: Add a new transaction
 router.post('/', async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id);
     if (!currentUser) {
-      return res.redirect('/auth/sign-in'); // Redirect if user not found
+      return res.redirect('/auth/sign-in');
     }
 
     // Validate the transaction data
@@ -78,19 +101,15 @@ router.post('/', async (req, res) => {
       return res.send('Please fill in all fields.');
     }
 
-    // Create a new transaction instance
+    // Create and save new transaction
     const newTransaction = new Transaction(req.body);
-
-    // Save the transaction first
     await newTransaction.save();
 
-    // Add the new transaction to the user's transactions array
-    currentUser.transactions.push(newTransaction);
-
-    // Save changes to the user
+    // Push the transaction ID instead of the full object
+    currentUser.transactions.push(newTransaction._id);
     await currentUser.save();
 
-    // Redirect to the user's transactions page
+    // Redirect to transactions page
     res.redirect(`/users/${currentUser._id}/transactions`);
   } catch (error) {
     console.log(error);
@@ -99,21 +118,21 @@ router.post('/', async (req, res) => {
 });
 
 // Delete Transaction Route: Delete a specific transaction
+// controllers/applications.js
+
 router.delete('/:transactionId', async (req, res) => {
   try {
-    // Check if the transactionId is valid
-    if (!mongoose.Types.ObjectId.isValid(req.params.transactionId)) {
-      return res.redirect('/'); // Redirect if invalid ObjectId
-    }
-
+    // Look up the user from req.session
     const currentUser = await User.findById(req.session.user._id);
-    // Use the Mongoose .deleteOne() method to delete a transaction
+    // Use the Mongoose .deleteOne() method to delete
+    // an application using the id supplied from req.params
     currentUser.transactions.id(req.params.transactionId).deleteOne();
     // Save changes to the user
     await currentUser.save();
-    // Redirect back to the transactions index view
+    // Redirect back to the applications index view
     res.redirect(`/users/${currentUser._id}/transactions`);
   } catch (error) {
+    // If any errors, log them and redirect back home
     console.log(error);
     res.redirect('/');
   }

@@ -22,16 +22,20 @@ const transactionSchema = new mongoose.Schema({
   date: { type: Date, required: true } // Date of transaction
 });
 
-// Define user schema
+
+// models/user.js
+
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  password: { type: String, required: true },
-  transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }] // Reference Transactions
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  transactions: [transactionSchema], // embedding the applicationSchema here
 });
 
-// Create models
-const User = mongoose.model('User', userSchema);
-const Transaction = mongoose.model('Transaction', transactionSchema);
-
-// Export both models
-module.exports = User;
+const User = mongoose.model('User',userSchema)
+module.exports=User
