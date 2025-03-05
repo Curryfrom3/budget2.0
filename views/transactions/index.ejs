@@ -19,7 +19,12 @@
     <ul> 
       <% if (transactions && transactions.length > 0) { %> 
         <% transactions.forEach((transaction) => { %>
-          <li><%= transaction.name %> - $<%= transaction.amount %> on <%= transaction.date.toDateString() %></li>
+
+          <li>
+            <a href="/users/<%= user._id %>/transactions/<%= transaction._id %>">
+              <%= transaction.name %> - $<%= transaction.amount %> on <%= transaction.date.toDateString() %>
+            </a>
+          </li>
         <% }) %>
       <% } else { %>
         <p>No transactions found.</p>

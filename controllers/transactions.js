@@ -36,37 +36,45 @@ router.get('/new', async (req, res) => {
 });
 // controllers/applications.js
 
-router.get('/:transactionId', (req, res) => {
-  res.send(`here is your request param: ${req.params.transactionId}`);
-});
+
+  router.get('/:transactionId', async (req, res) => {
+    try {
+      // Look up the user from req.session
+      const currentUser = await User.findById(req.session.user._id);
+      // Find the application by the applicationId supplied from req.params
+      const transaction = currentUser.transactions.id(req.params.transactionId);
+      // Render the show view, passing the application data in the context object
+      res.render('transactions/show.ejs', {
+        transaction: transaction,
+      });
+    } catch (error) {
+      // If any errors, log them and redirect back home
+      console.log(error);
+      res.redirect('/');
+    }
+  });
+  
 
 // Show Transaction Details Route: Display a specific transaction
-router.get('/:transactionId', async (req, res) => {
+// controllers/applications.js
+
+router.get('/:applicationId', async (req, res) => {
   try {
-    // Check if the transactionId is valid
-    if (!mongoose.Types.ObjectId.isValid(req.params.transactionId)) {
-      return res.redirect('/'); // Redirect if invalid ObjectId
-    }
-
+    // Look up the user from req.session
     const currentUser = await User.findById(req.session.user._id);
-    if (!currentUser) {
-      return res.redirect('/auth/sign-in'); // Redirect if user not found
-    }
-
-    const transaction = await Transaction.findById(req.params.transactionId);
-    if (!transaction) {
-      return res.redirect('/');
-    }
-
+    // Find the application by the applicationId supplied from req.params
+    const transaction = currentUser.transactions.id(req.params.transactionId);
+    // Render the show view, passing the application data in the context object
     res.render('transactions/show.ejs', {
-      user: currentUser,
-      transaction: transaction
+      transaction: transaction,
     });
   } catch (error) {
-    console.error(error);
+    // If any errors, log them and redirect back home
+    console.log(error);
     res.redirect('/');
   }
 });
+
 // controllers/applications.js`
 
 router.post('/', async (req, res) => {
@@ -89,33 +97,7 @@ router.post('/', async (req, res) => {
 
 //users/:userId/transactions
 // Create Transaction Route: Add a new transaction
-router.post('/', async (req, res) => {
-  try {
-    const currentUser = await User.findById(req.session.user._id);
-    if (!currentUser) {
-      return res.redirect('/auth/sign-in');
-    }
 
-    // Validate the transaction data
-    if (!req.body.name || !req.body.amount || !req.body.category || !req.body.type || !req.body.date) {
-      return res.send('Please fill in all fields.');
-    }
-
-    // Create and save new transaction
-    const newTransaction = new Transaction(req.body);
-    await newTransaction.save();
-
-    // Push the transaction ID instead of the full object
-    currentUser.transactions.push(newTransaction._id);
-    await currentUser.save();
-
-    // Redirect to transactions page
-    res.redirect(`/users/${currentUser._id}/transactions`);
-  } catch (error) {
-    console.log(error);
-    res.redirect('/');
-  }
-});
 
 // Delete Transaction Route: Delete a specific transaction
 // controllers/applications.js

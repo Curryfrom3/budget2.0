@@ -5,17 +5,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= transaction.title %></title>
+    <title><%= transaction.name %></title>
   </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
-    <h1><%= transaction.title %> at <%= transaction.company %></h1>
+    <h1><%= transaction.name %> at <%= transaction.amount %></h1>
     <% if (transaction.notes) { %>
     <p>Notes: <%= transaction.notes %></p>
-    <% } %> <% if (transaction.postingLink) { %>
-    <a href="<%= transaction.postingLink %>">Visit this job posting</a>
     <% } %>
-    <p>The status of this transaction is: <%= transaction.status %></p>
+    <p>The status of this transaction is: <%= transaction.type %></p>
 
     <!-- Add the following link -->
     <a href="/users/<%= user._id %>/transactions/<%= transaction._id %>/edit">
@@ -28,6 +26,5 @@
       method="POST"
     >
       <button type="submit">Delete this transaction</button>
-    </form>
   </body>
 </html>
