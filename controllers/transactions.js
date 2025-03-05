@@ -138,14 +138,10 @@ router.delete('/:transactionId', async (req, res) => {
   }
 });
 
-// Edit Transaction Route: Display the form to edit a transaction
+// controllers/transactions.js
+
 router.get('/:transactionId/edit', async (req, res) => {
   try {
-    // Check if the transactionId is valid
-    if (!mongoose.Types.ObjectId.isValid(req.params.transactionId)) {
-      return res.redirect('/'); // Redirect if invalid ObjectId
-    }
-
     const currentUser = await User.findById(req.session.user._id);
     const transaction = currentUser.transactions.id(req.params.transactionId);
     res.render('transactions/edit.ejs', {
@@ -157,16 +153,17 @@ router.get('/:transactionId/edit', async (req, res) => {
   }
 });
 
-// Update Transaction Route: Update a specific transaction
+// controllers/transactions.js`
+
 router.put('/:transactionId', async (req, res) => {
   try {
-    // Check if the transactionId is valid
-    if (!mongoose.Types.ObjectId.isValid(req.params.transactionId)) {
-      return res.redirect('/'); // Redirect if invalid ObjectId
-    }
-
+    // Find the user from req.session
     const currentUser = await User.findById(req.session.user._id);
+    // Find the current transaction from the id supplied by req.params
     const transaction = currentUser.transactions.id(req.params.transactionId);
+    // Use the Mongoose .set() method
+    // this method updates the current transaction to reflect the new form
+    // data on `req.body`
     transaction.set(req.body);
     // Save the current user
     await currentUser.save();

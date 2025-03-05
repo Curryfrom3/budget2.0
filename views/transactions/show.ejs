@@ -1,5 +1,3 @@
-<!-- views/applications/show.ejs -->
-
 <!-- views/transactions/show.ejs -->
 
 <!DOCTYPE html>
@@ -7,29 +5,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-    <title><%= transaction.name %></title>
+    <title><%= transaction.title %></title>
   </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
-    <h1><%= transaction.name %> - $<%= transaction.amount %></h1>
-    
-    <p>Category: <%= transaction.category %></p>
-    <p>Type: <%= transaction.type %></p>
-    <p>Date: <%= transaction.date.toDateString() %></p>
-
+    <h1><%= transaction.title %> at <%= transaction.company %></h1>
     <% if (transaction.notes) { %>
-      <p>Notes: <%= transaction.notes %></p>
+    <p>Notes: <%= transaction.notes %></p>
+    <% } %> <% if (transaction.postingLink) { %>
+    <a href="<%= transaction.postingLink %>">Visit this job posting</a>
     <% } %>
-    
-    <% if (transaction.receiptLink) { %>
-      <a href="<%= transaction.receiptLink %>">View receipt</a>
-    <% } %>
+    <p>The status of this transaction is: <%= transaction.status %></p>
+
+    <!-- Add the following link -->
+    <a href="/users/<%= user._id %>/transactions/<%= transaction._id %>/edit">
+      Edit this transaction
+    </a>
+    <!--  -->
+
     <form
-      action="/users/<%= user._id %>/applications/<%= application._id %>?_method=DELETE"
+      action="/users/<%= user._id %>/transactions/<%= transaction._id %>?_method=DELETE"
       method="POST"
     >
-  </form>
-      <button type="submit">Delete this application</button>
+      <button type="submit">Delete this transaction</button>
+    </form>
   </body>
 </html>
