@@ -2,13 +2,236 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-/* public/stylesheets/style.css */
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
 
+/* Body Styling */
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  background-color: #9ac2ef;
+  align-items: center;
+  padding: 20px;
+  padding-top: 60px; /* Keeps content below fixed navbar */
+}
+
+/* Navbar */
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px; /* Reduced padding for smaller navbar */
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensures navbar stays on top of other elements */
+}
+
+nav a {
+  text-decoration: none;
+  color: #2b2d42; /* Dark color for better visibility */
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 5px 10px;
+  transition: color 0.3s ease-in-out;
+}
+
+nav a:hover {
+  color: #ef233c; /* Accent color on hover */
+}
+
+/* Main Container */
+.container {
+  max-width: 500px;
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Heading */
+h1 {
+  font-size: 1.5rem;
+  color: #2b2d42;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between form elements */
+  margin-top: 20px; /* Space above the form */
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px; /* Max width for larger screens */
+  margin-bottom: 20px; /* Space below form */
+}
+
+/* Form Input Fields (Text, Number, Date, etc.) */
+input, select {
+  width: 100%; /* Make fields full-width */
+  padding: 10px;
+  border: 1px solid #ccc; /* Light border for inputs */
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #f7f9fc; /* Slightly off-white background for inputs */
+  transition: border-color 0.3s ease-in-out;
+}
+
+/* Focused Input & Select Fields */
+input:focus, select:focus {
+  border-color: #2b2d42; /* Dark blue-gray border when focused */
+  outline: none; /* Remove default outline */
+  background-color: #fff; /* White background when focused */
+}
+
+/* Form Button */
+button {
+  background: #2b2d42; /* Dark background for the button */
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+
+/* Button Hover Effect */
+button:hover {
+  background: #ef233c; /* Accent color on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Button Focus Effect */
+button:focus {
+  outline: 3px solid #2b2d42; /* Outline when focused */
+  outline-offset: 2px;
+}
+
+/* Spacing for Individual Input Fields */
+input[type="text"], input[type="number"], input[type="date"], select {
+  margin-bottom: 15px; /* Space below each input field */
+}
+
+/* Form Labels */
+label {
+  font-weight: bold;
+  color: #2b2d42;
+  font-size: 1rem;
+  margin-bottom: 5px; /* Space between label and input */
+}
+
+/* Error Messages (if needed) */
+.error {
+  color: #ef233c;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+}
+/* Unordered List (ul) - Container */
+ul {
+  list-style-type: none; /* Removes default bullet points */
+  padding-left: 0; /* Removes left padding */
+  margin: 0; /* Removes default margin */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between items */
+  padding: 20px; /* Adds padding inside the bubble */
+  background-color: #fff; /* White background for bubble */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  max-width: 600px; /* Keeps the list bubble width reasonable */
+  margin: 20px auto; /* Centers it on the page */
+}
+
+/* List Items (li) - Inside the bubble */
+li {
+  font-size: 1rem;
+  color: #2b2d42; /* Dark gray for text */
+  padding: 10px 15px; /* Padding for each item inside the bubble */
+  border-radius: 10px; /* Rounded corners for each item */
+  background-color: #f7f9fc; /* Light gray background */
+  transition: background-color 0.3s ease; /* Smooth background change */
+}
+
+/* Hover Effect for List Items */
+li:hover {
+  background-color: #e1e8f0; /* Lighter gray when hovered */
+  cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+}
+
+/* Anchor Tags (a) - Links inside the bubbles */
+a {
+  text-decoration: none; /* Removes default underline */
+  color: #2b2d42; /* Dark color for links */
+  font-weight: bold; /* Bold for links to stand out */
+  transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition */
+}
+
+/* Hover Effect for Links */
+a:hover {
+  color: #ef233c; /* Accent red color on hover */
+  text-decoration: underline; /* Underline on hover */
+}
+/* Heading 1 (h1) - Bubble Style */
+h1 {
+  font-size: 1.75rem; /* Slightly larger font for heading */
+  color: #2b2d42; /* Dark color for the heading */
+  text-align: center;
+  padding: 20px;
+  background-color: #fff; /* White background for bubble effect */
+  border-radius: 15px; /* Rounded corners for the heading */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 20px; /* Space below the heading */
+  max-width: 600px; /* Limit max width of the heading */
+  margin: 20px auto; /* Center it horizontally */
+}
+
+/* Tags or Labels - Bubble Style (like categories) */
+.tag {
+  display: inline-block;
+  background-color: #f7f9fc; /* Light gray background for tags */
+  color: #2b2d42; /* Dark gray text for the tag */
+  padding: 8px 15px; /* Padding inside the tag */
+  border-radius: 20px; /* Rounded edges for tags */
+  margin-right: 10px; /* Space between tags */
+  margin-bottom: 10px; /* Space below tags */
+  font-size: 0.9rem; /* Slightly smaller font size for tags */
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for tags */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+/* Hover Effect for Tags */
+.tag:hover {
+  background-color: #2b2d42; /* Dark background when hovered */
+  color: white; /* White text when hovered */
+  cursor: pointer; /* Cursor changes to pointer */
 }
