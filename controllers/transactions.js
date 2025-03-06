@@ -139,6 +139,7 @@ router.get('/:transactionId/edit', async (req, res) => {
 
 router.put('/:transactionId', async (req, res) => {
   try {
+    console.log(req.params.transactionId)
     // Find the user from req.session
     const currentUser = await User.findById(req.session.user._id);
     // Find the current transaction from the id supplied by req.params

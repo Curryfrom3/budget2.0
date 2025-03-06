@@ -13,7 +13,7 @@
     <h1>Edit Transaction: <%= transaction.name %></h1>
 
     <!-- views/transactions/edit.ejs -->
-    <form action="/transactions/<%= transaction._id %>?_method=PUT" method="POST">
+    <form action="/users/<%= user._id %>/transactions/<%= transaction._id %>?_method=PUT" method="POST">
       <label for="name">Transaction Name:</label>
       <input type="text" name="name" id="name" value="<%= transaction.name %>" required />
     
